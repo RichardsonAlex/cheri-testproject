@@ -1,5 +1,5 @@
 /dynamic
-/dynamic-lld
+/dynamic-with-lld
 /static
-/static-lld
+/static-with-lld
 
