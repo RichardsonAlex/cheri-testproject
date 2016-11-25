@@ -7,7 +7,7 @@ add_executable(helloworld helloworld.c)
 
 function(create_dump target)
     add_custom_command(TARGET ${target} POST_BUILD BYPRODUCTS "${CMAKE_CURRENT_BINARY_DIR}/${target}.dump" "${CMAKE_CURRENT_BINARY_DIR}/${target}.nodebug"
-    COMMAND cheri-unknown-freebsd-objcopy --strip-debug "$<TARGET_FILE:main>" "${CMAKE_CURRENT_BINARY_DIR}/${target}.nodebug"
+    COMMAND cheri-unknown-freebsd-objcopy --strip-debug "$<TARGET_FILE:${target}>" "${CMAKE_CURRENT_BINARY_DIR}/${target}.nodebug"
     COMMAND cheri-unknown-freebsd-objdump "-xrsSdTt" "${CMAKE_CURRENT_BINARY_DIR}/${target}.nodebug" > "${CMAKE_CURRENT_BINARY_DIR}/${target}.dump"
 )
 endfunction()
