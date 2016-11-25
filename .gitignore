@@ -1,5 +1,5 @@
-/dynamic
-/dynamic-with-lld
-/static
-/static-with-lld
+/*-dynamic
+/*-dynamic-with-lld
+/*-static
+/*-static-with-lld
 

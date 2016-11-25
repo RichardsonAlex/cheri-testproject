@@ -2,9 +2,10 @@
 set -e
 
 clean_and_compile() {
-	test -f "$1/CMakeCache.txt" && rm -r "$1"
-	mkdir -p "$1"
-	pushd "$1"
+	local builddir="$(uname -s)-$1"
+	test -f "$builddir/CMakeCache.txt" && rm -r "$builddir"
+	mkdir -p "$builddir"
+	pushd "$builddir"
 	command "cmake-for-cheribsd-cheriabi-$1.sh" -G Ninja .. -DCMAKE_BUILD_TYPE=Debug
 	ninja
 	popd
