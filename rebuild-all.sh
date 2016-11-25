@@ -5,7 +5,7 @@ clean_and_compile() {
 	test -f "$1/CMakeCache.txt" && rm -r "$1"
 	mkdir -p "$1"
 	pushd "$1"
-	command "cmake-for-cheribsd-cheriabi-$1.sh" -G Ninja .. -DCMAKE_BUILD_TYPE=Release
+	command "cmake-for-cheribsd-cheriabi-$1.sh" -G Ninja .. -DCMAKE_BUILD_TYPE=Debug
 	ninja
 	popd
 }
