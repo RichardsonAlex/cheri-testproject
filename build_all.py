@@ -23,7 +23,7 @@ for variant in variants:
     builddir = srcdir / (os.uname().sysname + "-" + variant)  # type: Path
     if args.clean and (builddir / "CMakeCache.txt").exists():
         print("rm -rf", builddir)
-        # shutil.rmtree(str(builddir))
+        shutil.rmtree(str(builddir))
     if not builddir.exists():
         os.makedirs(str(builddir), exist_ok=True)
     run(["cmake-for-cheribsd-cheriabi-" + variant + ".sh", "-GNinja", "-DCMAKE_BUILD_TYPE=Debug", ".."], cwd=builddir)
