@@ -1,6 +1,8 @@
 project(testproj)
 cmake_minimum_required(VERSION 3.0)
 add_compile_options(-O0)
+# I doubt this makes a difference but cheriabitest does it:
+add_compile_options(-ftls-model=local-exec)
 add_executable(main main.c)
 add_executable(helloworld helloworld.c)
 
