@@ -20,12 +20,13 @@ args = parser.parse_args()
 variants = ["dynamic", "dynamic-with-lld", "static", "static-with-lld"]
 srcdir = Path(__file__).parent
 for variant in variants:
-    builddir = srcdir / (os.uname().sysname + "-" + variant)  # type: Path
+    # builddir = srcdir / (os.uname().sysname + "-" + variant)  # type: Path
+    builddir = Path("/exports/users/alr48/postgres") / (os.uname().sysname + "-" + variant) 
     if args.clean and (builddir / "CMakeCache.txt").exists():
         print("rm -rf", builddir)
         shutil.rmtree(str(builddir))
     if not builddir.exists():
         os.makedirs(str(builddir), exist_ok=True)
-    run(["cmake-for-cheribsd-cheriabi-" + variant + ".sh", "-GNinja", "-DCMAKE_BUILD_TYPE=Debug", ".."], cwd=builddir)
+    run(["cmake-for-cheribsd-cheriabi-" + variant + ".sh", "-GNinja", "-DCMAKE_BUILD_TYPE=Debug", str(srcdir.absolute())], cwd=builddir)
     run(["ninja"], cwd=builddir)
 
