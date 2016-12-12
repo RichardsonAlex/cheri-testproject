@@ -6,14 +6,7 @@ add_compile_options(-ftls-model=local-exec)
 
 # Make the binaries smaller:
 # add_compile_options(-fdata-sections -ffunction-sections)
-# set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--gc-sections -Wl,--print-gc-sections")
-
-add_executable(main main.c)
-add_executable(helloworld helloworld.c)
-add_executable(very-simple very-simple.c)
-target_compile_options(very-simple PUBLIC -nostdlib)
-set_target_properties(very-simple PROPERTIES LINK_FLAGS -nostdlib)
-
+# set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-G,0 -Wl,--sort-section,name")
 
 function(create_dump target)
     add_custom_command(TARGET ${target} POST_BUILD BYPRODUCTS "${CMAKE_CURRENT_BINARY_DIR}/${target}.dump" "${CMAKE_CURRENT_BINARY_DIR}/${target}.nodebug"
@@ -23,9 +16,23 @@ function(create_dump target)
 )
 endfunction()
 
-create_dump(main)
-create_dump(helloworld)
-create_dump(very-simple)
+function(add_test_exe _target)
+    add_executable(${_target} ${ARGN})
+    create_dump(${_target})
+endfunction()
+
+add_test_exe(main main.c)
+add_test_exe(main-nodefaultlibs main-nodefaultlibs.c)
+set_target_properties(main-nodefaultlibs PROPERTIES LINK_FLAGS -nodefaultlibs)
+
+add_test_exe(helloworld helloworld.c)
+add_test_exe(very-simple very-simple.c)
+target_compile_options(very-simple PUBLIC -nostdlib)
+set_target_properties(very-simple PROPERTIES LINK_FLAGS -nostdlib)
+
+add_test_exe(linker-script linker-script.c)
+set_target_properties(linker-script PROPERTIES LINK_FLAGS "-Wl,-T,/home/alr48/cheri/output/rootfs256/usr/libdata/ldscripts/elf64btsmip_cheri_fbsd.x -nodefaultlibs")
+
 
 # message(STATUS "CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME}")
 # get_cmake_property(_variableNames VARIABLES)
